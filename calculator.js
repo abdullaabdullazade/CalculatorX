@@ -3,116 +3,115 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export function CalculatorApp () {
   const [displayValue, setDisplayValue] = useState('0');
-  const [firstOperand, setFirstOperand] = useState(null);
-  const [operator, setOperator] = useState(null);
-  const [waitingForSecondOperand, setWaitingForSecondOperand] = useState(false);
+  const [firstValue, setFirstValue] = useState(null);
+  const [currentOperator, setCurrentOperator] = useState(null);
+  const [isWaitingForSecondValue, setIsWaitingForSecondValue] = useState(false);
 
-  const inputDigit = (digit) => {
-    if (waitingForSecondOperand) {
+  const handleDigitPress = (digit) => {
+    if (isWaitingForSecondValue) {
       setDisplayValue(String(digit));
-      setWaitingForSecondOperand(false);
+      setIsWaitingForSecondValue(false);
     } else {
       setDisplayValue(displayValue === '0' ? String(digit) : displayValue + digit);
     }
   };
 
-  const inputDecimal = () => {
+  const handleDecimalPress = () => {
     if (!displayValue.includes('.')) {
       setDisplayValue(displayValue + '.');
     }
   };
 
-  const clearDisplay = () => {
+  const handleClearPress = () => {
     setDisplayValue('0');
-    setFirstOperand(null);
-    setOperator(null);
-    setWaitingForSecondOperand(false);
+    setFirstValue(null);
+    setCurrentOperator(null);
+    setIsWaitingForSecondValue(false);
   };
 
-  const performOperation = (nextOperator) => {
+  const handleOperatorPress = (nextOperator) => {
     const inputValue = parseFloat(displayValue);
-    if (firstOperand === null) {
-      setFirstOperand(inputValue);
-    } else if (operator) {
-      const currentValue = firstOperand || 0;
-      const result = calculate(currentValue, inputValue, operator);
+    if (firstValue === null) {
+      setFirstValue(inputValue);
+    } else if (currentOperator) {
+      const result = performCalculation(firstValue, inputValue, currentOperator);
       setDisplayValue(String(result));
-      setFirstOperand(result);
+      setFirstValue(result);
     }
-    setWaitingForSecondOperand(true);
-    setOperator(nextOperator);
+    setIsWaitingForSecondValue(true);
+    setCurrentOperator(nextOperator);
   };
 
-  const calculate = (firstOperand, secondOperand, operator) => {
+  const performCalculation = (firstValue, secondValue, operator) => {
     switch (operator) {
       case '+':
-        return firstOperand + secondOperand;
+        return firstValue + secondValue;
       case '-':
-        return firstOperand - secondOperand;
-      case '×':
-        return firstOperand * secondOperand;
-      case '÷':
-        return firstOperand / secondOperand;
+        return firstValue - secondValue;
+      case '*':
+        return firstValue * secondValue;
+      case '/':
+        return firstValue / secondValue;
       default:
-        return secondOperand;
+        return secondValue;
     }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.outputContainer}>
-        <Text style={styles.output}>{displayValue}</Text>
+      <View style={styles.displayContainer}>
+        <Text style={styles.display}>{displayValue}</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={clearDisplay} style={[styles.button, styles.clearButton]}>
+        <TouchableOpacity onPress={handleClearPress} style={[styles.button, styles.clearButton]}>
           <Text style={[styles.buttonText, styles.clearButtonText]}>C</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => performOperation('÷')} style={styles.button}>
-          <Text style={styles.buttonText}>÷</Text>
+        <TouchableOpacity onPress={() => handleOperatorPress('/')} style={styles.button}>
+          <Text style={styles.buttonText}>/</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(7)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(7)} style={styles.button}>
           <Text style={styles.buttonText}>7</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(8)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(8)} style={styles.button}>
           <Text style={styles.buttonText}>8</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(9)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(9)} style={styles.button}>
           <Text style={styles.buttonText}>9</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => performOperation('×')} style={styles.button}>
-          <Text style={styles.buttonText}>×</Text>
+        <TouchableOpacity onPress={() => handleOperatorPress('*')} style={styles.button}>
+          <Text style={styles.buttonText}>*</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(4)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(4)} style={styles.button}>
           <Text style={styles.buttonText}>4</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(5)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(5)} style={styles.button}>
           <Text style={styles.buttonText}>5</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(6)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(6)} style={styles.button}>
           <Text style={styles.buttonText}>6</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => performOperation('-')} style={styles.button}>
+        <TouchableOpacity onPress={() => handleOperatorPress('-')} style={styles.button}>
           <Text style={styles.buttonText}>-</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(1)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(1)} style={styles.button}>
           <Text style={styles.buttonText}>1</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(2)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(2)} style={styles.button}>
           <Text style={styles.buttonText}>2</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(3)} style={styles.button}>
+        <TouchableOpacity onPress={() => handleDigitPress(3)} style={styles.button}>
           <Text style={styles.buttonText}>3</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => performOperation('+')} style={styles.button}>
+        <TouchableOpacity onPress={() => handleOperatorPress('+')} style={styles.button}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDecimal()} style={[styles.button, styles.doubleButton]}>
+        <TouchableOpacity onPress={handleDecimalPress} style={[styles.button, styles.doubleButton]}>
           <Text style={styles.buttonText}>.</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => inputDigit(0)} style={[styles.button, styles.doubleButton]}>
+        <TouchableOpacity onPress={() => handleDigitPress(0)} style={[styles.button, styles.doubleButton]}>
           <Text style={styles.buttonText}>0</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => performOperation('=')} style={[styles.button, styles.doubleButton, styles.equalsButton]}>
+        <TouchableOpacity onPress={() => handleOperatorPress('=')} style={[styles.button, styles.doubleButton, styles.equalsButton]}>
           <Text style={[styles.buttonText, styles.equalsButtonText]}>=</Text>
         </TouchableOpacity>
       </View>
@@ -125,13 +124,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0f0f0',
   },
-  outputContainer: {
+  displayContainer: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     padding: 20,
   },
-  output: {
+  display: {
     fontSize: 48,
     color: '#333',
   },
