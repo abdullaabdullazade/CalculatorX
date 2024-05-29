@@ -1,6 +1,6 @@
 # 📱 Welcome to [Your App Name]!
 
-Thank you for downloading [Your App Name]! We're excited to have you on board. This app is designed to [briefly describe the app's purpose and features in a captivating way].
+Thank you for downloading CalculateX! We're excited to have you on board.
 
 ## 📥 Installation Instructions
 
