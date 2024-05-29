@@ -1,4 +1,4 @@
-# 📱 Welcome to [Your App Name]!
+# 📱 Welcome to CalculateX!
 
 Thank you for downloading CalculateX! We're excited to have you on board.
 
